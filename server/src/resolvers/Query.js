@@ -1,20 +1,19 @@
-async function feed(parent, args, ctx, info) {
-  const { filter, first, skip } = args // destructure input arguments
+async function feed(parent, { filter, first, skip }, ctx, info) {
   const where = filter
     ? { OR: [{ url_contains: filter }, { description_contains: filter }] }
-    : {}
+    : {};
 
-  const allLinks = await ctx.db.query.links({})
-  const count = allLinks.length
+  const allLinks = await ctx.db.query.links({});
+  const count = allLinks.length;
 
-  const queriedLinkes = await ctx.db.query.links({ first, skip, where })
+  const queriedLinks = await ctx.db.query.links({ first, skip, where });
 
   return {
-    linkIds: queriedLinkes.map(link => link.id),
+    linkIds: queriedLinks.map(link => link.id),
     count
-  }
+  };
 }
 
 module.exports = {
-  feed,
-}
+  feed
+};
